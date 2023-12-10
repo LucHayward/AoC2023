@@ -119,6 +119,7 @@ func main() {
 	}
 	fmt.Println(instructions)
 
+	visitedNodes := make(map[string]bool)
 	currentNodes := make([]*node, len(g.startNodes))
 	copy(currentNodes, g.startNodes)
 
@@ -136,6 +137,15 @@ func main() {
 		}
 		return true
 	}
+	//anyCurrentNodesEnd := func(cn []*node) bool {
+	//	for _, n := range cn {
+	//		if n.id[2] == 'Z' {
+	//			return true
+	//		}
+	//	}
+	//	return false
+	//}
+
 	//printStep := func(move string) {
 	//	//for _ = range currentNodes {
 	//	//	fmt.Printf(" |\t")
@@ -155,7 +165,17 @@ func main() {
 	//	fmt.Println()
 	//}
 
+	// 1: 2058
+	loop := make([]int, len(currentNodes))
+	for i := range loop {
+		loop[i] = -1
+	}
+	iters := make([]int, len(currentNodes))
+	for i := range loop {
+		iters[i] = -1
+	}
 	for i := 0; ; i++ {
+		visitedNodes[currentNodes[0].id] = true
 		if allCurrentNodesEnd(currentNodes) {
 			fmt.Println("\n", i)
 			break
@@ -171,7 +191,23 @@ func main() {
 				currentNodes[idx] = currentNodes[idx].right
 			}
 		}
-
+		//0:20803
+		//1:17873
+		//2:23147
+		//3:15529
+		//4:17287
+		//5:19631
+		//for idx := range currentNodes {
+		//	if currentNodes[idx].id[2] == 'Z' {
+		//		if i-loop[idx] == loop[idx] { // It's been the same number of iterations since the last time we saw Z
+		//
+		//		}
+		//	}
+		//}
+		if currentNodes[5].id[2] == 'Z' {
+			println(i-iters[5], i, currentNodes[0].id)
+			iters[5] = i
+		}
 		//printStep(string(move))
 	}
 
