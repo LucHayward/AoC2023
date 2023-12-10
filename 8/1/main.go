@@ -34,7 +34,8 @@ func (e *nodeExistsError) Error() string {
 }
 
 type graph struct {
-	nodes map[string]*node
+	nodes      map[string]*node
+	startNodes []*node // Nodes that end in A
 }
 
 // NewGraph creates and returns a new graph with initialized nodes map.
@@ -65,6 +66,9 @@ func (g *graph) addNode(id, leftID, rightID string) error {
 	} else {
 		newNode = &node{id: id}
 		g.nodes[id] = newNode
+		if id[2] == 'A' {
+			g.startNodes = append(g.startNodes, newNode)
+		}
 	}
 
 	nLeft, okLeft := g.nodes[leftID]
