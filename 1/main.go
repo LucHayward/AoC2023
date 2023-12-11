@@ -35,17 +35,40 @@ func main() {
 	check(err)
 	defer file.Close()
 
+	wordToNum := map[string]int{
+		"one":   1,
+		"two":   2,
+		"six":   6,
+		"four":  4,
+		"five":  5,
+		"nine":  9,
+		"three": 3,
+		"seven": 7,
+		"eight": 8,
+	}
+
 	var nums []int
 	var result int
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		for _, c := range line {
-			if 48 <= c && c <= 57 { // int
+		lineLength := len(line)
+		for i, c := range line {
+			switch {
+			case '0' <= c && c <= '9': // int
 				nums = append(nums, int(c-48))
+			case i+3 <= lineLength && wordToNum[line[i:i+3]] != 0:
+				nums = append(nums, wordToNum[line[i:i+3]])
+
+			case i+4 <= lineLength && wordToNum[line[i:i+4]] != 0:
+				nums = append(nums, wordToNum[line[i:i+4]])
+
+			case i+5 <= lineLength && wordToNum[line[i:i+5]] != 0:
+				nums = append(nums, wordToNum[line[i:i+5]])
 			}
 		}
+
 		i, err := strconv.Atoi(strconv.Itoa(nums[0]) + strconv.Itoa(nums[len(nums)-1]))
 		check(err)
 		result += i
